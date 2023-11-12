@@ -1,9 +1,21 @@
+'use client'
 import Image from 'next/image'
+import  { Client, Databases } from 'appwrite'
+
+
+
 import { Inter } from 'next/font/google'
+
+
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Home() {
+export default function Home({tweets}) {
+  
+  
+  console.log(tweets); 
+  
+  
   return (
     <main
       className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
@@ -115,4 +127,37 @@ export default function Home() {
       </div>
     </main>
   )
+}
+
+
+export async function getServerSideProps(context){
+  
+  const client = new Client(); 
+   
+   
+   client
+   .setEndpoint(process.env.NEXT_PUBLIC_ENDPOINT).setProject(process.env.NEXT_PUBLIC_PROJECT);
+
+   
+   const databases = new Databases(client); 
+   
+   const tweets = await databases.listDocuments(
+   
+   process.env.NEXT_PUBLIC_DATABASE, 
+   process.env.NEXT_PUBLIC_TWEETS_COLLECTION
+   
+
+   );
+   
+   
+   return{
+    
+    props: {tweets}, 
+    
+    
+    
+   }
+  
+
+  
 }
