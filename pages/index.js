@@ -7,6 +7,65 @@ import  { Client, Databases } from 'appwrite'
 import { Inter } from 'next/font/google'
 
 
+/**
+
+
+// Appwrite 
+
+const client = new Client();
+
+client
+    .setEndpoint('https://cloud.appwrite.io/v1')
+    .setProject('6550a20b1201de8cdc7b');
+
+appwrite api key name: 
+API_Key
+
+Appwrite API key secret 
+
+97be481159190df905975c03a11cfc2e4b1428475dd17da51986c1258507fd3882357e1244734857f082e3fea91a5d55fc4d5cb1e09d7b71e7c9dacc9442d0d165807dc40795850148036a3d92bc4aba36091996fbb5a9a488c2357cdffb3577419a4c4efda43bc8c3ca8f188df5e9f18204c5af638d1a56faf1d215793bf34e
+
+
+
+
+API Token Mail Trap 
+d6a9a960d0c37023264bbbfc07a3766e
+
+*/
+
+
+
+/** 
+const { MailtrapClient } = require("mailtrap");
+
+const TOKEN = "d6a9a960d0c37023264bbbfc07a3766e";
+const ENDPOINT = "https://send.api.mailtrap.io/";
+
+const client = new MailtrapClient({ endpoint: ENDPOINT, token: TOKEN });
+
+const sender = {
+  email: "mailtrap@twitx.vercel.app",
+  name: "Mailtrap Test",
+};
+const recipients = [
+  {
+    email: "danielwakeley7@gmail.com",
+  }
+];
+
+client
+  .send({
+    from: sender,
+    to: recipients,
+    subject: "You are awesome!",
+    text: "Congrats for sending test email with Mailtrap!",
+    category: "Integration Test",
+  })
+  .then(console.log, console.error);
+
+
+
+*/
 
 const inter = Inter({ subsets: ['latin'] })
 
