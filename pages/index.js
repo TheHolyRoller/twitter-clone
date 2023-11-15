@@ -1,6 +1,8 @@
 'use client'
 import Image from 'next/image'
-import  { Client, Databases, Account } from 'appwrite'
+import  { Client, Databases, Account } from 'appwrite';
+import { useEffect, useState, useRef, useCallback } from 'react'; 
+
 
 import { Inter } from 'next/font/google'
 
@@ -69,6 +71,49 @@ const inter = Inter({ subsets: ['latin'] })
 
 export default function Home({tweets}) {
   
+  console.log(tweets)
+  
+  
+  
+  const [user, setUser] = useState(null); 
+  
+  
+  
+  
+  
+  
+  useEffect(() => {    const client = new Client(); 
+    
+    const account = new Account(client); 
+
+    
+    client.setEndpoint(process.env.NEXT_PUBLIC_ENDPOINT)
+    .setProject(process.env.NEXT_PUBLIC_PROJECT); 
+    
+    const promise = account.get(); 
+    
+    promise.then(function(response) {
+    
+      console.log(response); 
+      setUser(response.email)
+      
+      
+
+      
+    }, function(error){
+    
+    console.log(error); 
+    
+
+      
+    });
+    
+    
+  
+   
+  }, [])
+  
+  
   
   
 
@@ -99,10 +144,150 @@ const createUser = async () => {
     
   })
 }
+
   
-  console.log(tweets);
+const userLogin = async () => {
+  
+  const client = new Client(); 
+  
+  const account = new Account(client); 
+  
+  client
+  .setEndpoint(process.env.NEXT_PUBLIC_ENDPOINT)
+  .setProject(process.env.NEXT_PUBLIC_PROJECT);
+  
+  const response = account.createEmailSession('jack@gmail.com', 'password'); 
   
   
+  
+  response.then(function (response) {
+    
+    console.log(response); 
+
+    (function (error) {
+    
+    
+      console.log(error); 
+    })
+    
+    
+    
+  })
+}
+// const guestLogin = async () => {
+  
+//   const client = new Client(); 
+  
+//   const account = new Account(client); 
+  
+//   client
+//   .setEndpoint(process.env.NEXT_PUBLIC_ENDPOINT)
+//   .setProject(process.env.NEXT_PUBLIC_PROJECT);
+  
+//   const response = account.createAnonymousSession('jack@gmail.com', 'password'); 
+
+  
+//   response.then(function (response) {
+    
+//     console.log(response); 
+
+//     (function (error) {
+
+//       console.log(error); 
+//     })
+    
+    
+    
+//   })
+// }
+
+
+
+
+
+
+
+// const logoutSessions = async () => {
+  
+//   const client = new Client(); 
+  
+//   const account = new Account(client); 
+  
+//   client
+//   .setEndpoint(process.env.NEXT_PUBLIC_ENDPOINT)
+//   .setProject(process.env.NEXT_PUBLIC_PROJECT);
+  
+//   const response = account.deleteSessions(); 
+  
+//   response.then(function (response) {
+    
+//     console.log(response); 
+    
+//     setUser("");
+
+
+//     (function (error) {
+    
+    
+//       console.log(error); 
+//     })
+
+    
+//   })
+// }
+
+
+
+
+
+const createTweet = async () => {
+  
+  const client = new Client(); 
+  
+  const databases = new Databases(client); 
+  
+  client
+  .setEndpoint(process.env.NEXT_PUBLIC_ENDPOINT)
+  .setProject(process.env.NEXT_PUBLIC_PROJECT);
+  
+  const response = databases.createDocument(
+  
+    process.env.NEXT_PUBLIC_DATABASE, 
+    process.env.NEXT_PUBLIC_TWEETS_COLLECTION, 
+    "uniqueID", 
+    {
+    
+      text: "hello world", 
+      
+      
+    }
+    
+    
+  ); 
+  
+  response.then(function (response) {
+    
+    console.log(response); 
+    
+    setUser("");
+
+
+    (function (error) {
+    
+    
+      console.log(error); 
+    })
+
+    
+  })
+}
+
+
+
+
+
+
+
   
   
   return (
@@ -114,11 +299,49 @@ const createUser = async () => {
     <button onClick={createUser} style={{cursor: 'pointer', position: 'absolute', zIndex: '1000'}}  >
       CREATE USER 
     </button> 
-    <button onClick={createUser} style={{cursor: 'pointer', position: 'absolute', zIndex: '1000', padding: '3rem'}}  >
-      CREATE USER VIA EMAIL 
+    
+    <button onClick={userLogin} style={{cursor: 'pointer', position: 'absolute', zIndex: '1000', padding: '3rem'}}  >
+      Login User  
     </button> 
+    <button onClick={createTweet} style={{cursor: 'pointer', position: 'absolute', zIndex: '1000', padding: '9rem'}}  >
+      Create Tweet  
+    </button> 
+    {/* <button onClick={guestLogin} style={{cursor: 'pointer', position: 'absolute', zIndex: '1000', padding: '11rem'}}  >
+      Login as Guest   
+    </button>  */}
+    {/* <button onClick={logoutSessions} style={{cursor: 'pointer', position: 'absolute', zIndex: '1000', padding: '9rem'}}  >
+      Log out
+    </button>  */}
+    <div style={{padding: '3rem', marginTop: '4rem'}} >
+      
+   {user && <div> Hello {user}</div>}
+    
+    </div>
+    
+    <div>
+    
+    <h2>Tweets</h2>
+    
+    {tweets.documents.map((tweet) => {
+      
+      return(
+      
+    <div key={tweet.$id} >
+    
+    <h3>{tweet.text}</h3>
+    
+    <p>
+    {tweet.createdAt}
+    
+    </p>
+    </div>
+    
+    )
     
     
+    })}
+      
+    </div>
      
     </main>
   )
