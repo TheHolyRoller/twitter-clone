@@ -1,1 +1,1 @@
-export { default } from './appwrite'
+export { default } from './appwrite'; 
