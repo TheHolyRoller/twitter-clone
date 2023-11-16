@@ -4,7 +4,7 @@ const sdk = require('node-appwrite');
 const client = new sdk.Client(); 
 
 
-export const users = new sdk..Users(client); 
+        export const users = new sdk.Users(client); 
 
 
 client
